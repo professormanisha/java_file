@@ -1,0 +1,168 @@
+This application will have four main classes:
+1.	Team - Represents a soccer team with a name and a score.
+2.	GamePlay - Simulates a match between two teams and updates their scores.
+3.	LeaderBoard - Tracks the scores of all teams and reports the winners.
+4.	Main- The main execution file
+
+
+1.	Team.java File
+
+public class Team 
+{
+    	private String name; 
+    	private int score; 
+
+    	//constructor
+   	 public Team(String name) 
+{
+        		this.name = name;
+        		this.score = 0; //initial score is 0
+    	}
+
+    	//returns the name of the team
+   	 public String getName() 
+{
+       		 return name;
+   	 }
+
+    	//returns the score of the team
+    	public int getScore() 
+{
+        		return score;
+    	}
+
+    	//updates the score of the team
+    	public void updateScore(int score) 
+{
+        		this.score += score;
+    	}
+}
+
+2) GamePlay.java File
+import java.util.Random;
+public class GamePlay
+ {
+   	 private Random random = new Random(); // Random number generator.
+    	// Play a game between two teams
+    	public void playGame(Team team1, Team team2) 
+{
+        		int team1Score = random.nextInt(5); // Random score for team 1.
+        		int team2Score = random.nextInt(5); // Random score for team 2.
+
+        		// Update the scores of the teams
+        		team1.updateScore(team1Score);
+        		team2.updateScore(team2Score);
+    }
+}
+
+3) LeaderBoard.java File
+import java.util.Arrays;
+public class LeaderBoard 
+{
+
+    	private Team[] teams; // Array of all teams
+
+    	// Constructor
+    	public LeaderBoard(Team[] teams) 
+{
+       		 this.teams = teams;
+    	}
+
+    	// Print the leaderboard
+    	public void printLeaderBoard() 
+{
+        		// Sort the teams in descending order of scores.
+        		Arrays.sort(teams, (team1, team2) -> team2.getScore() - team1.getScore());
+
+        		System.out.println("Leaderboard:");
+        		for (Team team : teams) 
+                     {
+            		System.out.println("Team " + team.getName() + ": " + team.getScore() + " points");
+        		}
+   	 }
+
+    	// Get the winner
+   	 public Team getWinner() 
+{
+       		 if (teams.length == 0)
+           	{
+            		return null;
+       		 }
+
+        		// Sort the teams in descending order of scores
+        		return teams[0];
+    	}
+}
+
+
+4) Main.java File
+public class Main 
+{
+    	public static void main(String[] args) 
+{
+        		// making 6 teams
+        		Team[] teams = {
+            	new Team("Team 1"),
+            	new Team("Team 2"),
+           	 new Team("Team 3"),
+            	new Team("Team 4"),
+            	new Team("Team 5"),
+           	 new Team("Team 6")
+        };
+
+        //initializing the game
+        GamePlay gamePlay = new GamePlay();
+        //playing the game
+        for (int i = 0; i < teams.length; i++) 
+{
+            	for (int j = i + 1; j < teams.length; j++) 
+          {
+                		gamePlay.playGame(teams[i], teams[j]);
+            	}
+        	}
+
+        //printing the leaderboard
+        LeaderBoard leaderboard = new LeaderBoard(teams);
+        leaderboard.printLeaderBoard();
+
+        //printing the winner
+        Team winner = leaderboard.getWinner();
+        if (winner != null) 
+{
+            	System.out.println("Winner: " + winner.getName());
+           } 
+else 
+{
+            	System.out.println("No winner. Leaderboard is empty.");
+        	}
+    }
+}
+
+
+Output:
+Run 1
+E:\Manisha>javac Main.java
+
+E:\Manisha>java Main
+Leaderboard:
+Team Team 1: 14 points
+Team Team 5: 11 points
+Team Team 6: 8 points
+Team Team 2: 7 points
+Team Team 4: 7 points
+Team Team 3: 5 points
+Winner: Team 1
+
+E:\Manisha>
+Run-2
+E:\Manisha>java Main
+Leaderboard:
+Team Team 1: 12 points
+Team Team 2: 11 points
+Team Team 6: 10 points
+Team Team 3: 8 points
+Team Team 4: 8 points
+Team Team 5: 7 points
+Winner: Team 1
+
+E:\Manisha>
